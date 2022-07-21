@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { DataResult, process, State } from '@progress/kendo-data-query';
 import {
   Grid,
@@ -19,7 +19,7 @@ const initialDataState = {
   skip: 0,
 };
 const App = () => {
-  const [dataState, setDataState] = React.useState<State>(initialDataState);
+  const [dataState, setDataState] = React.useState(initialDataState);
 
   return (
     <Grid
@@ -34,38 +34,13 @@ const App = () => {
       sortable={true}
       scrollable="virtual"
       data={process(products, dataState)}
-      onColumnReorder={(event) => {
-        // handleColumnReorderOrResize(event);
-      }}
-      // onColumnResize={(event) => {
-      //   if (event.nativeEvent.type === 'pointerup')
-      //     // handleColumnReorderOrResize(event);
-      // }}
-      // cellRender={loadingCell}
       rowRender={rowRender}
-      dataItemKey={'id'}
+      dataItemKey={'ProductID'}
       onDataStateChange={(e) => {
         setDataState(e.dataState);
       }}
       {...dataState}
     >
-      {/* <Grid
-      style={{
-        height: '800px',
-      }}
-      rowHeight={63}
-      data={process(products, dataState)}
-      dataItemKey={'ProductID'}
-      filterable={true}
-      resizable={true}
-      reorderable={true}
-      sortable={true}
-      scrollable="virtual"
-      onDataStateChange={(e) => {
-        setDataState(e.dataState);
-      }}
-      {...dataState}
-    > */}
       <Column field="ProductID" title="Product Id" filter={'numeric'} />
       <Column field="ProductName" />
       <Column field="UnitPrice" filter={'numeric'} />
@@ -74,4 +49,6 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.querySelector('my-app'));
+const container = document.querySelector('my-app');
+const root = createRoot(container);
+root.render(<App />);
